@@ -1,0 +1,14 @@
+name: Deploy
+on:
+  push:
+    branches:
+      - main
+jobs:
+  deploy:
+    # Ensure this runs on x86 linux
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Deploy
+        run: echo "Deploying to {{ secrets.RUSTY_IP }}"
