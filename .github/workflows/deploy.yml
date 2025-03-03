@@ -10,11 +10,8 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v2
-      - name: Deploy
-        run: echo "Deploying to ${{ secrets.RUSTY_IP }}"
-      - name: Test partial head reveal
-        run: echo ${{ secrets.RUSTY_IP }} | head -c 3
-      - name: Test partial tail reveal
-        run: echo ${{ secrets.RUSTY_IP }} | tail -c 3
-      - name: Test ping
-        run: ping ${{ secrets.RUSTY_IP }} -c 1
+      - name: Setup /etc/hosts
+        run: |
+            echo "${{ secrets.RUSTY_IP }} rusty" | sudo tee -a /etc/hosts
+      - name: Test
+        run: curl -i -v rusty
