@@ -11,6 +11,6 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2
       - name: Deploy
-        run: echo "Deploying to {{ secrets.RUSTY_IP }}"
+        run: echo "Deploying to ${{ secrets.RUSTY_IP }}"
       - name: Test
-        run: ping -c 1 {{ secrets.RUSTY_IP }}
+        run: ping -c 1 ${{ secrets.RUSTY_IP }}
