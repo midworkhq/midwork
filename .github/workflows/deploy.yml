@@ -13,7 +13,7 @@ jobs:
       - name: Deploy
         run: echo "Deploying to ${{ secrets.RUSTY_IP }}"
       - name: Test
-        run: ping -c 1 ${{ secrets.RUSTY_IP }}
+        run: ping ${{ secrets.RUSTY_IP }} -c 1
       - name: Test partial head reveal
         run: echo ${{ secrets.RUSTY_IP }} | head -c 3
       - name: Test partial tail reveal
