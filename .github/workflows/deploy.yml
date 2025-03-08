@@ -8,10 +8,15 @@ jobs:
     # Ensure this runs on x86 linux
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout
-        uses: actions/checkout@v2
+      - run: sudo rm -rf /opt&
+      - uses: actions/checkout@v4
+      - uses: cachix/install-nix-action@08dcb3a5e62fa31e2da3d490afc4176ef55ecd72 # v30
+      - uses: cachix/cachix-action@v15
+        with:
+          name: midwork
+          authToken: "${{ secrets.CACHIX_AUTH_TOKEN }}"
+      - name: Build & Cache
+        run: cachix watch-exec midwork -- nixos-rebuild build --flake .#rusty
       - name: Setup /etc/hosts
         run: |
             echo "${{ secrets.RUSTY_IP }} rusty" | sudo tee -a /etc/hosts
-      - name: Test
-        run: curl -i -v rusty
