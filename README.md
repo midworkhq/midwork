@@ -1,8 +1,16 @@
-# MidWork
+<!-- PROJECT LOGO -->
+<p align="center">
+  <a href="https://github.com/midworkhq/midwork">
+   <img src="https://github.com/user-attachments/assets/0e326b60-6b1b-4650-8684-eafe859082c5" alt="Logo">
+  </a>
 
+  <h3 align="center">MidWork</h3>
+</p>
+
+## About the project
 MidWork is a platform which helps people to find new workplaces.
 
-## Docs
+## Docs for development, deployment and maintainance
 
 - [Secrets](docs/SECRETS.md)
 
