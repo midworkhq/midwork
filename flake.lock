@@ -20,6 +20,26 @@
         "type": "github"
       }
     },
+    "nix-relic": {
+      "inputs": {
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1741534961,
+        "narHash": "sha256-grO8Hl/es9EUxx7aaFpeXnpngrk8pP7FaTwMmIqxhzA=",
+        "owner": "DavSanchez",
+        "repo": "Nix-Relic",
+        "rev": "5ed20359a1228bc54cfee7bbd31168d547bd6632",
+        "type": "github"
+      },
+      "original": {
+        "owner": "DavSanchez",
+        "repo": "Nix-Relic",
+        "type": "github"
+      }
+    },
     "nixpkgs": {
       "locked": {
         "lastModified": 1741171237,
@@ -51,6 +71,7 @@
     "root": {
       "inputs": {
         "disko": "disko",
+        "nix-relic": "nix-relic",
         "nixpkgs": [
           "srvos",
           "nixpkgs"

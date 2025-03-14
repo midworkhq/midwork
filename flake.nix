@@ -13,6 +13,9 @@
       url = "github:Mic92/sops-nix";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    
+    nix-relic.url = "github:DavSanchez/Nix-Relic";
+    nix-relic.inputs.nixpkgs.follows = "nixpkgs";
 
     # Allows us to fetch the updating list of ssh keys for Onni
     onnimonni-ssh-keys = {
@@ -20,7 +23,7 @@
       flake = false;
     };
   };
-  outputs = inputs@{ self, nixpkgs, srvos, disko, sops-nix, ... }: {
+  outputs = inputs@{ self, nixpkgs, srvos, disko, sops-nix, nix-relic, ... }: {
     nixosConfigurations.rusty = nixpkgs.lib.nixosSystem {
       system = "x86_64-linux";
       specialArgs = {
@@ -36,6 +39,8 @@
         disko.nixosModules.disko
         # Decrypt secrets with SOPS
         sops-nix.nixosModules.sops
+        # Use New Relic Monitoring
+        nix-relic.nixosModules.newrelic-infra
         # Finally the server specific configuration here
         ./nixos/servers/rusty.nix
       ];

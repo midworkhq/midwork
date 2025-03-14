@@ -15,6 +15,7 @@ in
     ./modules/programs.nix
     ./modules/postgresql.nix
     ./modules/sops.nix
+    ./modules/new-relic.nix
   ];
 
   # Each disk is 10TB, contains small boot partitions and rest is for zfs pool
