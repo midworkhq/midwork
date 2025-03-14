@@ -1,0 +1,45 @@
+name: Deploy
+on:
+  push:
+    branches:
+      - main
+jobs:
+  deploy:
+    # Ensure this runs on x86 linux
+    runs-on: ubuntu-latest
+    steps:
+      - uses: nixbuild/nix-quick-install-action@5bb6a3b3abe66fd09bbf250dce8ada94f856a703 #v30
+      - name: Install nixos-rebuild & sops
+        run: nix profile install nixpkgs#nixos-rebuild nixpkgs#sops
+      - uses: actions/checkout@v4
+      - name: Setup GitHub Actions cache for Nix
+        uses: nix-community/cache-nix-action@c448f065ba14308da81de769632ca67a3ce67cf5 #v6.1.2
+        with:
+          primary-key: nix-${{ runner.os }}-${{ hashFiles('**/*.nix', '**/flake.lock') }}
+          restore-prefixes-first-match: nix-${{ runner.os }}-
+          gc-max-store-size-linux: 5G
+          purge: false
+      - name: Build & Cache Rusty
+        run: nixos-rebuild build --flake .#rusty
+      - name: Exit if not on master branch
+        if: github.ref != 'refs/heads/main'
+        run: exit 0
+      - name: Setup /etc/hosts
+        run: |
+            echo "${{ secrets.RUSTY_IP }} rusty" | sudo tee -a /etc/hosts
+      - name: Setup private ssh key into ssh-agent
+        env:
+            SSH_AUTH_SOCK: /tmp/ssh_agent.sock
+        run: |
+            mkdir -p ~/.ssh
+            ssh-agent -a $SSH_AUTH_SOCK > /dev/null
+            ssh-add - <<< "${{ secrets.SSH_KEY }}"
+      - name: Deploy to Rusty
+        run: |
+            RUSTY_HOST_KEY=$(sops --extract '["ssh_host_ed25519_key_pub"]' -d secrets/rusty.yaml)
+            echo "::add-mask::$RUSTY_HOST_KEY"
+            echo "rusty $RUSTY_HOST_KEY" >> ~/.ssh/known_hosts
+            nixos-rebuild switch --flake .#rusty --target-host github-actions@rusty --use-remote-sudo
+        env:
+            SOPS_AGE_KEY: ${{ secrets.AGE_SECRET_KEY }}
+            SSH_AUTH_SOCK: /tmp/ssh_agent.sock

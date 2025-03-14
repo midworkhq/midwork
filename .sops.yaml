@@ -1,0 +1,12 @@
+keys:
+  - &user_onnimonni age1fqprsenj7wye8h9868g4juemq2slfafvjmssk4naytattf5efy4s39k9k3
+  - &github_actions age13qjcd6yhqrea7xmqk678glq3j4me0ltlmg96z23v2h5yp0dgc9lqc4r5sj
+  - &host_rusty age1x477y05nzdjvl23wvtlfdndeyyrl6r3nkew5tj84u3xhfxtevydqch7dle
+
+creation_rules:
+  - path_regex: secrets/[^/]+\.(yaml|json|env|ini)$
+    key_groups:
+    - age:
+      - *user_onnimonni
+      - *host_rusty
+      - *github_actions
