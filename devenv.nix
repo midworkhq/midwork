@@ -62,8 +62,12 @@
     # Leaking secrets
     trufflehog.enable = true;
     ripsecrets.enable = true;
-    # Prevents unencrypted sops files from being committed
-    #pre-commit-ensure-sops.enable = true;
+  };
+  # Prevents unencrypted sops files from being committed
+  pre-commit.hooks.pre-commit-hook-ensure-sops = {
+    enable = true;
+    # FIXME: doesn't support env file
+    files = "secret.*\\.(yaml|yml|json)$";
   };
 
   # See full reference at https://devenv.sh/reference/options/
