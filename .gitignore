@@ -1,3 +1,15 @@
 # Devenv
-.devenv
-.devenv.flake.nix
+.devenv*
+devenv.local.nix
+
+# This is managed automatically by devenv
+.pre-commit-config.yaml
+
+# direnv
+.direnv
+
+# MacOS bullshit
+.DS_Store
+
+# VSCode caches
+.vscode

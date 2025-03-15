@@ -1,11 +1,23 @@
-{ pkgs, lib, config, inputs, ... }:
+{
+  pkgs,
+  lib,
+  config,
+  inputs,
+  ...
+}:
 
 {
   # Use VS Code as the default editor for sops secrets
   env.EDITOR = "code --wait";
 
   # https://devenv.sh/packages/
-  packages = [ pkgs.age pkgs.sops pkgs.git pkgs.cloudflared pkgs.nixos-rebuild ];
+  packages = [
+    pkgs.age
+    pkgs.sops
+    pkgs.git
+    pkgs.cloudflared
+    pkgs.nixos-rebuild
+  ];
   # TODO: add age-plugin-se when https://github.com/NixOS/nixpkgs/pull/382902 is merged
 
   # https://devenv.sh/languages/
@@ -39,7 +51,9 @@
   '';
 
   # https://devenv.sh/git-hooks/
-  # git-hooks.hooks.shellcheck.enable = true;
+  git-hooks.hooks = {
+    nixfmt-rfc-style.enable = true;
+  };
 
   # See full reference at https://devenv.sh/reference/options/
 }
