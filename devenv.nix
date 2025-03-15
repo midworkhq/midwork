@@ -51,8 +51,19 @@
   '';
 
   # https://devenv.sh/git-hooks/
+  pre-commit.excludes = [ ".devenv" ];
   git-hooks.hooks = {
+    # Nix files
     nixfmt-rfc-style.enable = true;
+    # Github Actions
+    actionlint.enable = true;
+    # Markdown files
+    markdownlint.enable = true;
+    # Leaking secrets
+    trufflehog.enable = true;
+    ripsecrets.enable = true;
+    # Prevents unencrypted sops files from being committed
+    #pre-commit-ensure-sops.enable = true;
   };
 
   # See full reference at https://devenv.sh/reference/options/
