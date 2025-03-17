@@ -8,6 +8,9 @@ jobs:
     # Ensure this runs on x86 linux
     runs-on: ubuntu-latest
     steps:
+      # There's 26G of disk space in the runner
+      # If you run out of disk space in the runner do this to free up 7.9G
+      # - run: sudo rm -rf /opt/hostedtoolcache
       - uses: nixbuild/nix-quick-install-action@5bb6a3b3abe66fd09bbf250dce8ada94f856a703 #v30
       - name: Install nixos-rebuild & sops
         run: nix profile install nixpkgs#nixos-rebuild nixpkgs#sops
