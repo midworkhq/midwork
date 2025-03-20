@@ -11,12 +11,29 @@
   env.EDITOR = "code --wait";
 
   # https://devenv.sh/packages/
-  packages = [
-    pkgs.age
-    pkgs.sops
-    pkgs.git
-    pkgs.cloudflared
-    pkgs.nixos-rebuild
+  packages = with pkgs; [
+    age
+    git
+    cloudflared
+    nixos-rebuild
+
+    # FIXME: Build sops from the main branch until 3.10 is released
+    # See full parameters for sops nix build here:
+    # https://github.com/NixOS/nixpkgs/blob/master/pkgs/by-name/so/sops/package.nix
+    (sops.overrideAttrs {
+      version = "3.10.0-unreleased";
+      vendorHash = "sha256-anKhfq3bIV27r/AvvhSSniKUf72gklv8waqRz0lKypQ=";
+      src = fetchFromGitHub {
+        owner = "getsops";
+        repo = "sops";
+        rev = "2eb776b01df5df04eee626da3e99e9717fffd9e0";
+        hash = "sha256-VB4/DyQoQnV/AAXteJPsD2vbtAilZcJPTCXk2nvUZU8=";
+      };
+      postPatch = ''
+        substituteInPlace go.mod \
+          --replace-fail "go 1.22" "go 1.23.3"
+      '';
+    })
   ];
   # TODO: add age-plugin-se when https://github.com/NixOS/nixpkgs/pull/382902 is merged
 
