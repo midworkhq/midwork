@@ -27,12 +27,11 @@ rec {
     # See full parameters for sops nix build here:
     # https://github.com/NixOS/nixpkgs/blob/master/pkgs/by-name/so/sops/package.nix
     (sops.overrideAttrs (
-      finalAttrs: _: {
+      finalAttrs: oldAttrs: {
         version = "3.10.0-unreleased";
         vendorHash = "sha256-anKhfq3bIV27r/AvvhSSniKUf72gklv8waqRz0lKypQ=";
         src = fetchFromGitHub {
-          owner = "getsops";
-          repo = "sops";
+          inherit (oldAttrs.src) owner repo;
           rev = "2eb776b01df5df04eee626da3e99e9717fffd9e0";
           hash = "sha256-VB4/DyQoQnV/AAXteJPsD2vbtAilZcJPTCXk2nvUZU8=";
         };
