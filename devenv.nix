@@ -6,9 +6,15 @@
   ...
 }:
 
-{
-  # Use VS Code as the default editor for sops secrets
-  env.EDITOR = "code --wait";
+rec {
+  # Use VS Code as the default editor
+  # To see all undocumented VS Code flags visit:
+  # https://github.com/microsoft/vscode/blob/main/src/vs/platform/environment/node/argv.ts
+  env.EDITOR = "code --wait --skip-welcome --skip-release-notes --disable-telemetry --skip-add-to-recently-opened";
+  # I noticed that when typing $ sops secret.yaml, that copilot was enabled
+  # This made me worry that the secrets were being sent to a remote server
+  # Disable co-pilot and all other extensions when editing SOPS secrets
+  env.SOPS_EDITOR = "${env.EDITOR} --new-window --disable-workspace-trust --disable-extensions";
 
   # https://devenv.sh/packages/
   packages = with pkgs; [

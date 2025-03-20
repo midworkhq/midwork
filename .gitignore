@@ -12,4 +12,6 @@ devenv.local.nix
 .DS_Store
 
 # VSCode caches
-.vscode
+.vscode/*
+# But keep settings
+!.vscode/settings.json

@@ -1,0 +1,16 @@
+{
+    // We will use these custom file associations to disable co-pilot
+    // See more in: https://stackoverflow.com/a/77908836/1337062
+    "files.associations": {
+        // If repo would contain secrets in .env file it's better to ignore it
+        ".env*": "plaintext",
+        // SOPS creates unencrypted temporary files here
+        "/var/folders/*/**": "plaintext",
+    },
+    // This setting can't be altered here and
+    // needs to be copied directly into user settings
+    "github.copilot.enable": {
+        "*": true,
+        "plaintext": false,
+    },
+}
