@@ -15,6 +15,12 @@ rec {
   # This made me worry that the secrets were being sent to a remote server
   # Disable co-pilot and all other extensions when editing SOPS secrets
   env.SOPS_EDITOR = "${env.EDITOR} --new-window --disable-workspace-trust --disable-extensions";
+  # Use age key which is securely generated with MacOS Secure Enclave
+  # See docs/SECRETS.md for more
+  # This can't be done with env because $HOME is not available for nix
+  enterShell = ''
+    export SOPS_AGE_KEY_FILE="$HOME/.config/sops/age/secure-enclave-key.txt"
+  '';
 
   # https://devenv.sh/packages/
   packages = with pkgs; [
@@ -28,7 +34,7 @@ rec {
     # https://github.com/NixOS/nixpkgs/blob/master/pkgs/by-name/so/sops/package.nix
     (sops.overrideAttrs (
       finalAttrs: oldAttrs: {
-        version = "3.10.0-unreleased";
+        version = "3.10.0-main";
         vendorHash = "sha256-anKhfq3bIV27r/AvvhSSniKUf72gklv8waqRz0lKypQ=";
         src = fetchFromGitHub {
           inherit (oldAttrs.src) owner repo;
@@ -54,13 +60,6 @@ rec {
   # services.postgres.enable = true;
 
   # https://devenv.sh/scripts/
-  scripts.hello.exec = ''
-    echo Loaded the environment for MidWork
-  '';
-
-  enterShell = ''
-    hello
-  '';
 
   # https://devenv.sh/tasks/
   # tasks = {
